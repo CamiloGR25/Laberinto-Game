@@ -11,12 +11,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector3 posicion;
     public float speed;
-    // private AudioSource audioRecoleccion;
+    private AudioSource golpePared;
+    private int puntaje = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        golpePared = GetComponent<AudioSource>();
         /*systemaparticula = particulas.GetComponent<ParticleSystem>();
         systemaparticula.Stop();
         audioRecoleccion = GetComponent<AudioSource>();*/
@@ -27,12 +29,33 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+    //detectar la pared con el collider
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Pared"))
+        {
+            golpePared.Play();
+        }
+    }
 
 
-    //OnTriggerEnter cuando colisiona con el colaider, other es el objeto del colaider
-    /* void OnTriggerEnter(Collider other)
-     {
-         if (other.gameObject.CompareTag("Recolectable"))
+    //OnTriggerEnter cuando colisiona con el collider del trigger, other es el objeto del colaider
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Moneda"))
+        {
+            Debug.Log("Se ha sumado 5 puntos");
+            puntaje += 5;
+            Debug.Log("Puntaje total: " + puntaje + " Puntos");
+        }
+
+        if (other.gameObject.CompareTag("Cofre"))
+        {
+            Debug.Log("Se ha sumado 25 puntos");
+            puntaje += 25;
+            Debug.Log("Puntaje total: " + puntaje + " Puntos");
+        }
+        /* if (other.gameObject.CompareTag("Recolectable"))
          {
              posicion = other.gameObject.transform.position;
              particulas.position = posicion;
@@ -46,9 +69,9 @@ public class PlayerController : MonoBehaviour
                  Debug.Log("yaaa");
                  SceneManager.LoadScene(1);
              }
-         }
+         }*/
 
-     }*/
+    }
 
     void FixedUpdate()
     {//movimiento:
