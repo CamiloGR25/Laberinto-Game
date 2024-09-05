@@ -5,8 +5,8 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     private AudioSource coinSound;
+    private int velocidadRotacion = 220;
 
-    // Start is called before the first frame update
     void Start()
     {
         coinSound = GetComponent<AudioSource>();
@@ -20,5 +20,10 @@ public class Coin : MonoBehaviour
             gameObject.SetActive(false);//esconde la moneda
             AudioSource.PlayClipAtPoint(coinSound.clip, transform.position);//da el sonido
         }
+    }
+
+    private void Update()
+    {
+        transform.Rotate(Vector3.up, velocidadRotacion * Time.deltaTime); //rotar el objeto
     }
 }

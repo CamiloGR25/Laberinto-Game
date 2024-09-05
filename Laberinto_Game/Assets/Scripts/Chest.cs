@@ -5,7 +5,8 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     private AudioSource audioCofre;
-    // Start is called before the first frame update
+
+
     void Start()
     {
         audioCofre = GetComponent<AudioSource>();

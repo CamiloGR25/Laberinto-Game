@@ -7,6 +7,10 @@ TagManager:
   - Pared
   - Cofre
   - Moneda
+  - Destruir
+  - Plataformas
+  - ExplosionP
+  - Explosion2
   layers:
   - Default
   - TransparentFX
