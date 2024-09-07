@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private ParticleSystem sistemaparticula;//sistema de particula
     private Rigidbody rb;
     private Vector3 posicion;
-    public float speed;
+    public float speed = 8;
     private AudioSource golpePared;
     private int puntaje = 0;
     public AudioSource explosion;
@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("PUNTAJE TOTAL: " + puntaje + " PUNTOS");
         rb = GetComponent<Rigidbody>(); //trae componente del rigibody
         golpePared = GetComponent<AudioSource>(); //trae componente de audio
         sistemaparticula = particulas.GetComponent<ParticleSystem>();//trae el componente de la particula
@@ -39,14 +40,8 @@ public class PlayerController : MonoBehaviour
         paredTrampa2 = GameObject.FindWithTag("ParedTrampa2");
         paredTrampa1.SetActive(false);
         paredTrampa2.SetActive(false);
-
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     //detectar la pared con el collider al chocar
     void OnCollisionEnter(Collision collision)
     {
@@ -56,15 +51,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     //OnTriggerEnter cuando colisiona con el collider del trigger, other es el objeto del colaider
     void OnTriggerEnter(Collider other)
     {
         //objeto que choco con la etiqueta correspondiente
         if (other.gameObject.CompareTag("Moneda"))
         {
-            Debug.Log("Se ha sumado 5 puntos por la MONEDA");
-            puntaje += 5;
+            Debug.Log("Se ha sumado 2 puntos por la MONEDA");
+            puntaje += 2;
             Debug.Log("PUNTAJE TOTAL: " + puntaje + " PUNTOS");
         }
 
@@ -90,7 +84,7 @@ public class PlayerController : MonoBehaviour
             explosion.Play();
             explosionParticula1.Play();
             explosionParticula2.Play();
-            StartCoroutine(PausarParticulas());
+            StartCoroutine(PausarParticulas());//llamar el metodo para hacer algo desoues de x segundos
         }
 
         if (other.gameObject.CompareTag("Trampa"))
@@ -107,8 +101,10 @@ public class PlayerController : MonoBehaviour
             }
             paredTrampa1.SetActive(false);
             paredTrampa2.SetActive(false);
+            speed = 0;
             rb.position = puntoAparicion.position;//aparecer en el punto del respawn o inicio
             identificadorDestruir.SetActive(true);
+            StartCoroutine(AjustarVelocidad());
         }
 
     }
@@ -121,6 +117,11 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Se pauso particulas explosion");
     }
 
+    private IEnumerator AjustarVelocidad()
+    {
+        yield return new WaitForSeconds(2f);
+        speed = 8;
+    }
     void FixedUpdate()
     {//movimiento:
         float moveHorizontal = Input.GetAxis("Horizontal");
