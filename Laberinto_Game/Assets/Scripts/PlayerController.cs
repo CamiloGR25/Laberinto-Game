@@ -15,6 +15,11 @@ public class PlayerController : MonoBehaviour
     public AudioSource explosion;
     private ParticleSystem explosionParticula1;
     private ParticleSystem explosionParticula2;
+    private GameObject paredTrampa1;
+    private GameObject paredTrampa2;
+    public Transform puntoAparicion;
+    GameObject[] plataformas;
+    GameObject identificadorDestruir;
 
     // Start is called before the first frame update
     void Start()
@@ -23,11 +28,17 @@ public class PlayerController : MonoBehaviour
         golpePared = GetComponent<AudioSource>(); //trae componente de audio
         sistemaparticula = particulas.GetComponent<ParticleSystem>();//trae el componente de la particula
         sistemaparticula.Stop(); //para la particula
-        explosion = GameObject.Find("Explosion").GetComponent<AudioSource>(); //traer el componente por nombre del objeto
+        explosion = GameObject.Find("Explosion Sonido").GetComponent<AudioSource>(); //traer el componente por nombre del objeto
         explosionParticula1 = GameObject.FindWithTag("ExplosionP").GetComponent<ParticleSystem>();
         explosionParticula2 = GameObject.FindWithTag("Explosion2").GetComponent<ParticleSystem>();
         explosionParticula1.Stop();
         explosionParticula2.Stop();
+        plataformas = GameObject.FindGameObjectsWithTag("Plataformas");//guardar varios objetos por su tag
+        identificadorDestruir = GameObject.FindWithTag("Destruir");//guardar un solo objeto por su tag
+        paredTrampa1 = GameObject.FindWithTag("ParedTrampa");
+        paredTrampa2 = GameObject.FindWithTag("ParedTrampa2");
+        paredTrampa1.SetActive(false);
+        paredTrampa2.SetActive(false);
 
     }
 
@@ -36,10 +47,10 @@ public class PlayerController : MonoBehaviour
     {
 
     }
-    //detectar la pared con el collider
+    //detectar la pared con el collider al chocar
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Pared"))
+        if (collision.gameObject.CompareTag("Pared") || collision.gameObject.CompareTag("ParedTrampa") || collision.gameObject.CompareTag("ParedTrampa2"))
         {
             golpePared.Play();
         }
@@ -70,13 +81,34 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Destruir"))
         {
-            GameObject plataforma = GameObject.FindWithTag("Plataformas");//guardar objeto por su tag
-            plataforma.SetActive(false);//ocultar plataformas
-            other.gameObject.SetActive(false);
+            foreach (GameObject plataforma in plataformas)
+            {
+                plataforma.SetActive(false);//ocultar plataformas
+            }
+
+            identificadorDestruir.SetActive(false);
             explosion.Play();
             explosionParticula1.Play();
             explosionParticula2.Play();
             StartCoroutine(PausarParticulas());
+        }
+
+        if (other.gameObject.CompareTag("Trampa"))
+        {
+            paredTrampa1.SetActive(true);
+            paredTrampa2.SetActive(true);
+        }
+
+        if (other.gameObject.CompareTag("Muerte"))
+        {
+            foreach (GameObject plataforma in plataformas)
+            {
+                plataforma.SetActive(true);//ocultar plataformas
+            }
+            paredTrampa1.SetActive(false);
+            paredTrampa2.SetActive(false);
+            rb.position = puntoAparicion.position;//aparecer en el punto del respawn o inicio
+            identificadorDestruir.SetActive(true);
         }
 
     }

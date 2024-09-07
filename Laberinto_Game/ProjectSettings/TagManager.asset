@@ -11,6 +11,10 @@ TagManager:
   - Plataformas
   - ExplosionP
   - Explosion2
+  - ParedTrampa
+  - Trampa
+  - ParedTrampa2
+  - Muerte
   layers:
   - Default
   - TransparentFX
