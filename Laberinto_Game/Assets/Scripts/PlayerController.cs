@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour
         explosionParticula1.Stop();
         explosionParticula2.Stop();
 
-
     }
 
     // Update is called once per frame
