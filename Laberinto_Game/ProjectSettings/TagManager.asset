@@ -15,6 +15,7 @@ TagManager:
   - Trampa
   - ParedTrampa2
   - Muerte
+  - Puerta
   layers:
   - Default
   - TransparentFX
