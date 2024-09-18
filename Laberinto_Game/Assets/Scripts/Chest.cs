@@ -5,8 +5,6 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     private AudioSource audioCofre;
-
-
     void Start()
     {
         audioCofre = GetComponent<AudioSource>();

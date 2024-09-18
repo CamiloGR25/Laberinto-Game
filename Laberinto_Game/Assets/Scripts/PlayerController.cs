@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     GameObject[] plataformas;
     GameObject identificadorDestruir;
     private ParticleSystem victoriaParticulas;
+    private TimeController tiempoJuego;
 
     // Start is called before the first frame update
     void Start()
@@ -30,19 +31,26 @@ public class PlayerController : MonoBehaviour
         golpePared = GetComponent<AudioSource>(); //trae componente de audio
         sistemaparticula = particulas.GetComponent<ParticleSystem>();//trae el componente de la particula
         sistemaparticula.Stop(); //para la particula
+
         explosion = GameObject.Find("Explosion Sonido").GetComponent<AudioSource>(); //traer el componente por nombre del objeto
         explosionParticula1 = GameObject.FindWithTag("ExplosionP").GetComponent<ParticleSystem>();
         explosionParticula2 = GameObject.FindWithTag("Explosion2").GetComponent<ParticleSystem>();
         explosionParticula1.Stop();
         explosionParticula2.Stop();
+
         plataformas = GameObject.FindGameObjectsWithTag("Plataformas");//guardar varios objetos por su tag
         identificadorDestruir = GameObject.FindWithTag("Destruir");//guardar un solo objeto por su tag
+
         paredTrampa1 = GameObject.FindWithTag("ParedTrampa");
         paredTrampa2 = GameObject.FindWithTag("ParedTrampa2");
         paredTrampa1.SetActive(false);
         paredTrampa2.SetActive(false);
+
         victoriaParticulas = GameObject.FindWithTag("Victoria").GetComponent<ParticleSystem>(); ;
         victoriaParticulas.Stop();
+
+        tiempoJuego = GameObject.Find("Temporizador").GetComponent<TimeController>();
+        tiempoJuego.StartTime();
     }
 
     //detectar la pared con el collider al chocar
@@ -113,7 +121,12 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Ganar"))
         {
             victoriaParticulas.Play();
-            other.gameObject.GetComponent<AudioSource>().Play();
+            AudioSource audioGanar = other.gameObject.GetComponent<AudioSource>();
+            tiempoJuego.StopTime();
+            var finTiempo = tiempoJuego.GetTime();
+            Debug.Log("El tiempo transcurrido para pasar el laberinto fue: " + finTiempo + " Segundos");
+            other.gameObject.SetActive(false);
+            AudioSource.PlayClipAtPoint(audioGanar.clip, transform.position);
         }
 
     }
