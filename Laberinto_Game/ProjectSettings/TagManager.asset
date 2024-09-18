@@ -16,6 +16,8 @@ TagManager:
   - ParedTrampa2
   - Muerte
   - Puerta
+  - Victoria
+  - Ganar
   layers:
   - Default
   - TransparentFX

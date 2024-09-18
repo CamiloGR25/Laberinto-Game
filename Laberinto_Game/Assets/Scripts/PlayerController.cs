@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public Transform puntoAparicion;
     GameObject[] plataformas;
     GameObject identificadorDestruir;
+    private ParticleSystem victoriaParticulas;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
         paredTrampa2 = GameObject.FindWithTag("ParedTrampa2");
         paredTrampa1.SetActive(false);
         paredTrampa2.SetActive(false);
+        victoriaParticulas = GameObject.FindWithTag("Victoria").GetComponent<ParticleSystem>(); ;
+        victoriaParticulas.Stop();
     }
 
     //detectar la pared con el collider al chocar
@@ -105,6 +108,12 @@ public class PlayerController : MonoBehaviour
             rb.position = puntoAparicion.position;//aparecer en el punto del respawn o inicio
             identificadorDestruir.SetActive(true);
             StartCoroutine(AjustarVelocidad());
+        }
+
+        if (other.gameObject.CompareTag("Ganar"))
+        {
+            victoriaParticulas.Play();
+            other.gameObject.GetComponent<AudioSource>().Play();
         }
 
     }
