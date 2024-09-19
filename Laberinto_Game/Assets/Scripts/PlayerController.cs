@@ -13,8 +13,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource golpePared;
     private int puntaje = 0;
     public AudioSource explosion;
-    private ParticleSystem explosionParticula1;
-    private ParticleSystem explosionParticula2;
+    private ParticleSystem explosionParticulas;
     private GameObject paredTrampa1;
     private GameObject paredTrampa2;
     public Transform puntoAparicion;
@@ -27,16 +26,18 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Debug.Log("PUNTAJE TOTAL: " + puntaje + " PUNTOS");
+
         rb = GetComponent<Rigidbody>(); //trae componente del rigibody
+
         golpePared = GetComponent<AudioSource>(); //trae componente de audio
+
         sistemaparticula = particulas.GetComponent<ParticleSystem>();//trae el componente de la particula
         sistemaparticula.Stop(); //para la particula
 
         explosion = GameObject.Find("Explosion Sonido").GetComponent<AudioSource>(); //traer el componente por nombre del objeto
-        explosionParticula1 = GameObject.FindWithTag("ExplosionP").GetComponent<ParticleSystem>();
-        explosionParticula2 = GameObject.FindWithTag("Explosion2").GetComponent<ParticleSystem>();
-        explosionParticula1.Stop();
-        explosionParticula2.Stop();
+
+        explosionParticulas = GameObject.FindWithTag("Explosion").GetComponent<ParticleSystem>();
+        explosionParticulas.Stop();
 
         plataformas = GameObject.FindGameObjectsWithTag("Plataformas");//guardar varios objetos por su tag
         identificadorDestruir = GameObject.FindWithTag("Destruir");//guardar un solo objeto por su tag
@@ -46,7 +47,7 @@ public class PlayerController : MonoBehaviour
         paredTrampa1.SetActive(false);
         paredTrampa2.SetActive(false);
 
-        victoriaParticulas = GameObject.FindWithTag("Victoria").GetComponent<ParticleSystem>(); ;
+        victoriaParticulas = GameObject.FindWithTag("Victoria").GetComponent<ParticleSystem>();
         victoriaParticulas.Stop();
 
         tiempoJuego = GameObject.Find("Temporizador").GetComponent<TimeController>();
@@ -93,8 +94,8 @@ public class PlayerController : MonoBehaviour
 
             identificadorDestruir.SetActive(false);
             explosion.Play();
-            explosionParticula1.Play();
-            explosionParticula2.Play();
+            explosionParticulas.Play();
+
             StartCoroutine(PausarParticulas());//llamar el metodo para hacer algo desoues de x segundos
         }
 
@@ -134,8 +135,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator PausarParticulas()
     {
         yield return new WaitForSeconds(4f);//cantidad de tiempo de espera para ejecutar
-        explosionParticula1.Stop();
-        explosionParticula2.Stop();
+        explosionParticulas.Stop();
         Debug.Log("Se pauso particulas explosion");
     }
 

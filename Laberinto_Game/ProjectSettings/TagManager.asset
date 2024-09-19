@@ -9,7 +9,6 @@ TagManager:
   - Moneda
   - Destruir
   - Plataformas
-  - ExplosionP
   - Explosion2
   - ParedTrampa
   - Trampa
@@ -18,6 +17,7 @@ TagManager:
   - Puerta
   - Victoria
   - Ganar
+  - Explosion
   layers:
   - Default
   - TransparentFX
