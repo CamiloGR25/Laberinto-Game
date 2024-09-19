@@ -128,10 +128,17 @@ public class PlayerController : MonoBehaviour
             Debug.Log("El tiempo transcurrido para pasar el laberinto fue: " + finTiempo + " Segundos");
             other.gameObject.SetActive(false);
             AudioSource.PlayClipAtPoint(audioGanar.clip, transform.position);
+            StartCoroutine(CambiarEscena());
         }
 
     }
     //Metodo para hacer algo despues de x segundos
+    private IEnumerator CambiarEscena()
+    {
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene(1);
+    }
+
     private IEnumerator PausarParticulas()
     {
         yield return new WaitForSeconds(4f);//cantidad de tiempo de espera para ejecutar
